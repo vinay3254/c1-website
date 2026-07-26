@@ -1,8 +1,22 @@
+import React from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import ProjectHero from '@/app/project-detail/components/ProjectHero';
+import ProjectContent from '@/app/project-detail/components/ProjectContent';
+import ProjectImageSequence from '@/app/project-detail/components/ProjectImageSequence';
+import RelatedProjects from '@/app/project-detail/components/RelatedProjects';
+
 export default function ProjectDetailPage() {
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Project Details</h1>
-      <p>Detailed view of projects.</p>
-    </div>
+    <>
+      <Header />
+      <main>
+        <ProjectHero />
+        <ProjectContent />
+        <ProjectImageSequence />
+        <RelatedProjects />
+      </main>
+      <Footer />
+    </>
   );
 }
