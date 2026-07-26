@@ -1,14 +1,55 @@
+'use client';
+
 import React from 'react';
-import * as Icons from 'lucide-react';
+import * as HeroIcons from '@heroicons/react/24/outline';
+import * as HeroIconsSolid from '@heroicons/react/24/solid';
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 
-export interface AppIconProps {
-  name: string;
-  className?: string;
-  size?: number;
+type IconVariant = 'outline' | 'solid';
+
+interface IconProps {
+    name: string; // Changed to string to accept dynamic values
+    variant?: IconVariant;
+    size?: number;
+    className?: string;
+    onClick?: () => void;
+    disabled?: boolean;
+    [key: string]: any;
 }
 
-export default function AppIcon({ name, className = '', size = 20 }: AppIconProps) {
-  const IconComponent = (Icons as unknown as Record<string, React.ComponentType<{ className?: string; size?: number }>>)[name];
-  if (!IconComponent) return null;
-  return <IconComponent className={className} size={size} />;
+function Icon({
+    name,
+    variant = 'outline',
+    size = 24,
+    className = '',
+    onClick,
+    disabled = false,
+    ...props
+}: IconProps) {
+    const iconSet = variant === 'solid' ? HeroIconsSolid : HeroIcons;
+    const IconComponent = iconSet[name as keyof typeof iconSet] as React.ComponentType<any>;
+
+    if (!IconComponent) {
+        return (
+            <QuestionMarkCircleIcon
+                width={size}
+                height={size}
+                className={`text-gray-400 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+                onClick={disabled ? undefined : onClick}
+                {...props}
+            />
+        );
+    }
+
+    return (
+        <IconComponent
+            width={size}
+            height={size}
+            className={`${disabled ? 'opacity-50 cursor-not-allowed' : onClick ? 'cursor-pointer hover:opacity-80' : ''} ${className}`}
+            onClick={disabled ? undefined : onClick}
+            {...props}
+        />
+    );
 }
+
+export default Icon;
